@@ -9,8 +9,11 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { SignInButton, SignUpButton, UserButton, useAuth } from "@clerk/nextjs";
 
 export function Navbar() {
+  const { userId } = useAuth();
+
   return (
     <motion.header
       initial={{ y: -100 }}
@@ -33,10 +36,36 @@ export function Navbar() {
       </nav>
 
       <div className="hidden md:flex items-center gap-4">
-        <Link href="/login" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-          Log in
-        </Link>
-        <Button className="rounded-full shadow-lg hover:shadow-primary/25 transition-all">Get Started</Button>
+        {!userId ? (
+          <>
+            <SignInButton mode="modal">
+              <Button variant="ghost" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+                Log in
+              </Button>
+            </SignInButton>
+            <SignInButton mode="modal" forceRedirectUrl="/dashboard" signUpForceRedirectUrl="/dashboard">
+              <Button className="rounded-full shadow-lg hover:shadow-primary/25 transition-all">
+                Dashboard
+              </Button>
+            </SignInButton>
+          </>
+        ) : (
+          <div className="flex items-center gap-4">
+            <Link href="/dashboard">
+              <Button variant="outline" className="rounded-full">
+                Dashboard
+              </Button>
+            </Link>
+            <UserButton 
+              appearance={{ 
+                elements: { 
+                  avatarBox: "w-10 h-10 ring-2 ring-primary/20",
+                  userButtonPopoverCard: "bg-card border-border/40" 
+                } 
+              }}
+            />
+          </div>
+        )}
       </div>
 
       {/* Mobile Nav */}
@@ -54,8 +83,24 @@ export function Navbar() {
             <Link href="#how-it-works" className="text-lg font-medium text-foreground">How it Works</Link>
             <Link href="#pricing" className="text-lg font-medium text-foreground">Pricing</Link>
             <hr className="border-border/40" />
-            <Link href="/login" className="text-lg font-medium text-muted-foreground hover:text-foreground">Log in</Link>
-            <Button size="lg" className="rounded-full w-full">Get Started Free</Button>
+            {!userId ? (
+              <>
+                <SignInButton mode="modal">
+                  <span className="text-lg font-medium text-muted-foreground hover:text-foreground cursor-pointer block">Log in</span>
+                </SignInButton>
+                <SignInButton mode="modal" forceRedirectUrl="/dashboard" signUpForceRedirectUrl="/dashboard">
+                  <Button size="lg" className="rounded-full w-full">Dashboard</Button>
+                </SignInButton>
+              </>
+            ) : (
+              <div className="flex flex-col gap-6">
+                <Link href="/dashboard" className="text-lg font-medium text-foreground">Dashboard</Link>
+                <div className="flex items-center gap-4">
+                  <UserButton />
+                  <span className="text-lg font-medium text-foreground">My Account</span>
+                </div>
+              </div>
+            )}
           </SheetContent>
         </Sheet>
       </div>

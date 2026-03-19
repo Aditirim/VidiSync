@@ -3,8 +3,12 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Sparkles, Play, ArrowRight } from "lucide-react";
+import { SignInButton, useAuth } from "@clerk/nextjs";
+import Link from "next/link";
 
 export function Hero() {
+  const { userId } = useAuth();
+
   return (
     <section className="relative min-h-[90vh] flex flex-col items-center justify-center pt-32 pb-20 px-6 overflow-hidden">
       {/* Background Gradients */}
@@ -50,10 +54,21 @@ export function Hero() {
           transition={{ duration: 0.5, delay: 0.3 }}
           className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto"
         >
-          <Button size="lg" className="h-14 px-8 text-base rounded-full w-full sm:w-auto shadow-xl shadow-primary/25 hover:scale-105 transition-all group">
-            Start Generating Free
-            <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-          </Button>
+          {!userId ? (
+            <SignInButton mode="modal" forceRedirectUrl="/dashboard" signUpForceRedirectUrl="/dashboard">
+              <Button size="lg" className="h-14 px-8 text-base rounded-full w-full sm:w-auto shadow-xl shadow-primary/25 hover:scale-105 transition-all group">
+                Start Generating Free
+                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </SignInButton>
+          ) : (
+            <Link href="/dashboard" className="w-full sm:w-auto">
+              <Button size="lg" className="h-14 px-8 text-base rounded-full w-full sm:w-auto shadow-xl shadow-primary/25 hover:scale-105 transition-all group">
+                Go to Dashboard
+                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </Link>
+          )}
           <Button size="lg" variant="outline" className="h-14 px-8 text-base rounded-full w-full sm:w-auto backdrop-blur-sm border-border/50 hover:bg-muted/50">
             <Play className="w-4 h-4 mr-2" />
             Watch Demo
