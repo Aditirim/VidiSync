@@ -55,9 +55,9 @@ export function Features() {
   return (
     <section id="features" className="py-24 bg-background relative z-10">
       <div className="container mx-auto px-6">
-        
+
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <motion.h2 
+          <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -68,7 +68,7 @@ export function Features() {
               go viral.
             </span>
           </motion.h2>
-          <motion.p 
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -79,7 +79,7 @@ export function Features() {
           </motion.p>
         </div>
 
-        <motion.div 
+        <motion.div
           variants={container}
           initial="hidden"
           whileInView="show"
@@ -87,7 +87,7 @@ export function Features() {
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
           {features.map((feature, index) => (
-            <motion.div 
+            <motion.div
               key={index}
               variants={item}
               className="p-8 rounded-2xl border border-border/40 bg-card hover:bg-card/60 transition-colors group"
@@ -102,7 +102,6 @@ export function Features() {
             </motion.div>
           ))}
         </motion.div>
-
       </div>
     </section>
   );
